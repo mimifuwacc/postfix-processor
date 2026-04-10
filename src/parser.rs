@@ -91,11 +91,6 @@ pub fn parse_program(program: &str, args: &[i32]) -> Result<Vec<Command>, String
         commands
     };
 
-    eprintln!("DEBUG: Parsed {} commands:", commands.len());
-    for (i, cmd) in commands.iter().enumerate() {
-        eprintln!("  [{}] {:?}", i, cmd);
-    }
-
     Ok(commands)
 }
 

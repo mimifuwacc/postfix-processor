@@ -24,17 +24,16 @@ impl PostFix {
     /// Executes the program and returns the final result
     pub fn run(&mut self) -> Result<i32, String> {
         eprintln!(
-            "DEBUG: Starting execution with {} commands",
-            self.command_stack.len()
+            "Initial data stack (bottom -> top): {:?}\n",
+            self.data_stack
         );
-        eprintln!("DEBUG: Initial data stack: {:?}", self.data_stack);
 
         while let Some(cmd) = self.command_stack.pop() {
-            eprintln!("DEBUG: Executing: {:?}", cmd);
-            eprintln!("DEBUG: Stack before: {:?}", self.data_stack);
+            eprintln!("Executing: {:?}", cmd);
+            eprintln!("Stack before: {:?}", self.data_stack);
             self.execute(cmd)?;
-            eprintln!("DEBUG: Stack after: {:?}", self.data_stack);
-            eprintln!("DEBUG: Remaining commands: {:?}", self.command_stack);
+            eprintln!("Stack after: {:?}", self.data_stack);
+            eprintln!("Remaining commands: {:?}\n", self.command_stack);
         }
 
         match self.data_stack.last() {
@@ -149,17 +148,17 @@ impl PostFix {
                 // so they execute in correct order when popped
                 if let Some(Value::Sequence(cmds)) = self.data_stack.pop() {
                     eprintln!(
-                        "DEBUG: Executing sequence with {} commands: {:?}",
+                        "Executing sequence with {} commands: {:?}",
                         cmds.len(),
                         cmds
                     );
-                    eprintln!("DEBUG: Current command stack: {:?}", self.command_stack);
+                    eprintln!("Current command stack: {:?}", self.command_stack);
 
                     for c in cmds.into_iter().rev() {
                         self.command_stack.push(c);
                     }
 
-                    eprintln!("DEBUG: Command stack after exec: {:?}", self.command_stack);
+                    eprintln!("Command stack after exec: {:?}", self.command_stack);
                 } else {
                     return Err("exec requires a sequence".to_string());
                 }
