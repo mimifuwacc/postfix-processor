@@ -1,0 +1,31 @@
+WHITESPACE = _{ " " | "\t" | "\n" }
+
+program = { "(" ~ "postfix" ~ arg_count ~ commands ~ ")" }
+
+arg_count = { number }
+
+commands = { command* }
+
+command = {
+    number |
+    infix_op |
+    comparison_op |
+    stack_op |
+    executable_sequence
+}
+
+number = @{ ASCII_NONZERO_DIGIT ~ ASCII_DIGIT* | "0" }
+
+infix_op = {
+    "add" | "sub" | "mul" | "div" | "rem"
+}
+
+comparison_op = {
+    "lt" | "gt" | "eq"
+}
+
+stack_op = {
+    "pop" | "swap" | "sel" | "nget" | "exec"
+}
+
+executable_sequence = { "(" ~ command* ~ ")" }
